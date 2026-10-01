@@ -309,6 +309,27 @@ footer strong{color:var(--green)}
   .polkar-footer-modal{padding:12px}
   .polkar-footer-modal-box{padding:23px 17px 18px}
 }
+
+/* ===== POLKAR ADD-TO-CART MICRO FX v2 ===== */
+.atc-micro-target{position:relative!important;overflow:hidden!important;isolation:isolate;will-change:transform;transition:transform .12s ease,background-color .12s ease!important}
+.atc-micro-target .atc-original{display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.atc-micro-target .atc-spinner,.atc-micro-target .atc-success{display:none!important;align-items:center;justify-content:center;gap:7px}
+.atc-micro-target.atc-loading{pointer-events:none!important}
+.atc-micro-target.atc-loading .atc-original{display:none!important}
+.atc-micro-target.atc-loading .atc-spinner{display:inline-flex!important}
+.atc-micro-target.atc-success-state{background:#7fc83f!important;color:#071007!important;pointer-events:none!important}
+.atc-micro-target.atc-success-state .atc-original,.atc-micro-target.atc-success-state .atc-spinner{display:none!important}
+.atc-micro-target.atc-success-state .atc-success{display:inline-flex!important}
+.atc-spinner:before{content:"";width:14px;height:14px;border-radius:50%;border:2px solid currentColor;border-right-color:transparent;animation:atcSpin .16s linear infinite}
+@keyframes atcSpin{to{transform:rotate(360deg)}}
+.atc-fly-dot{position:fixed;left:0;top:0;width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;pointer-events:none;z-index:2147483647;background:radial-gradient(circle at 35% 30%,#fff 0 12%,#d9ff8b 28%,#9dcc3f 60%,rgba(157,204,63,.1) 100%);box-shadow:0 0 12px rgba(157,204,63,.75),0 0 28px rgba(157,204,63,.35);transform:translate3d(var(--sx),var(--sy),0) scale(1);will-change:transform,opacity;animation:atcFly .34s cubic-bezier(.22,.8,.2,1) forwards}
+@keyframes atcFly{0%{transform:translate3d(var(--sx),var(--sy),0) scale(1);opacity:1}50%{transform:translate3d(calc(var(--mx) - 8px),calc(var(--my) - 32px),0) scale(.85);opacity:1}100%{transform:translate3d(var(--ex),var(--ey),0) scale(.18);opacity:.15}}
+.atc-cart-pop{animation:atcCartPop .34s cubic-bezier(.2,.9,.2,1)!important;will-change:transform}
+@keyframes atcCartPop{0%{transform:scale(1)}30%{transform:scale(1.16) rotate(-2deg)}60%{transform:scale(.93) rotate(2deg)}100%{transform:scale(1)}}
+.atc-badge-pop{animation:atcBadgePop .3s cubic-bezier(.2,.9,.2,1)!important;will-change:transform}
+@keyframes atcBadgePop{0%{transform:scale(1)}45%{transform:scale(1.3)}100%{transform:scale(1)}}
+.atc-checkmark{width:15px;height:15px;stroke:currentColor;stroke-width:2.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+@media(prefers-reduced-motion:reduce){.atc-fly-dot,.atc-cart-pop,.atc-badge-pop,.atc-spinner:before{animation:none!important}}
 </style>
 <style>
 /* Polkar Store: menu/detail layout */
@@ -3538,6 +3559,237 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
 @media(max-width:600px){.polkar-navbar{height:82px}.polkar-header-actions{gap:5px}.polkar-login-btn{min-height:44px;padding:5px 7px}.polkar-login-avatar{width:30px;height:30px}.polkar-login-label{max-width:78px;font-size:10px}.polkar-profile-box{padding:18px 15px}.polkar-avatar-options{grid-template-columns:64px 64px 1fr}.polkar-avatar-option{height:64px}.polkar-avatar-upload{min-height:64px;padding:8px}.polkar-name-change-row{grid-template-columns:1fr}.polkar-profile-save{width:100%}}
 </style>
 
+
+<style id="polkar-cart-success-popup-css">
+#polkar-cart-success-popup{position:fixed;left:50%;bottom:24px;transform:translate(-50%,24px) scale(.94);width:min(calc(100vw - 28px),390px);padding:14px 16px;border:1px solid rgba(157,204,63,.45);border-radius:18px;background:rgba(15,18,14,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 14px 45px rgba(0,0,0,.42),0 0 28px rgba(157,204,63,.14);color:#fff;display:flex;align-items:center;gap:12px;opacity:0;visibility:hidden;z-index:2147483646;pointer-events:none;transition:opacity .18s ease,transform .24s cubic-bezier(.2,.9,.2,1),visibility .18s ease}
+#polkar-cart-success-popup.show{opacity:1;visibility:visible;transform:translate(-50%,0) scale(1)}
+#polkar-cart-success-popup .pcs-icon{width:36px;height:36px;flex:0 0 36px;border-radius:50%;display:grid;place-items:center;background:#9dcc3f;color:#0b1207;box-shadow:0 0 18px rgba(157,204,63,.35)}
+#polkar-cart-success-popup .pcs-icon svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+#polkar-cart-success-popup .pcs-copy{min-width:0;flex:1}.pcs-title{font-weight:800;font-size:14px;line-height:1.2}.pcs-sub{margin-top:3px;font-size:12px;color:#b8c0b3}.pcs-cart{font-size:12px;font-weight:800;color:#dfffab;white-space:nowrap}
+#polkar-cart-success-popup.pop .pcs-icon{animation:pcsIcon .38s cubic-bezier(.2,.9,.2,1)}
+@keyframes pcsIcon{0%{transform:scale(.7) rotate(-10deg)}55%{transform:scale(1.12) rotate(3deg)}100%{transform:scale(1) rotate(0)}}
+@media(max-width:520px){#polkar-cart-success-popup{bottom:16px;border-radius:16px;padding:13px 14px}.pcs-cart{display:none}}
+@media(prefers-reduced-motion:reduce){#polkar-cart-success-popup{transition:none!important}#polkar-cart-success-popup.pop .pcs-icon{animation:none!important}}
+</style>
+<style id="polkar-weapons-css">
+/* ===== POLKAR WEAPONS CATEGORY ===== */
+.weapons-category-card{
+  background:
+    radial-gradient(circle at 88% 18%,rgba(255,74,18,.22),transparent 34%),
+    linear-gradient(135deg,#151515 0%,#090909 56%,#170b08 100%) !important;
+  border-color:#5b2a1d !important;
+}
+.weapons-category-card .icon{
+  background:linear-gradient(145deg,rgba(255,89,28,.20),rgba(20,20,20,.8)) !important;
+  border-color:rgba(255,103,38,.42) !important;
+  box-shadow:0 0 18px rgba(255,67,20,.12) inset;
+}
+.weapons-category-card strong{color:#fff4ee!important}
+.weapons-category-card::after{
+  content:"";position:absolute;inset:-70%;
+  background:linear-gradient(105deg,transparent 40%,rgba(255,104,38,.12) 50%,transparent 60%);
+  transform:translateX(-55%) rotate(8deg);
+  animation:weaponsCardFire 3.8s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes weaponsCardFire{
+  0%,58%{transform:translateX(-65%) rotate(8deg);opacity:0}
+  72%{opacity:1}
+  88%,100%{transform:translateX(65%) rotate(8deg);opacity:0}
+}
+body.theme-weapons{
+  --line:#a33b20;
+}
+body.theme-weapons .section{
+  border-color:#54251b;
+}
+.weapons-section .section-head{border-bottom-color:#43221a}
+.weapons-section .tag{color:#ff7845}
+.weapons-catalog{display:grid;gap:14px;margin-top:15px}
+.weapons-group{
+  background:
+    radial-gradient(circle at 90% 0%,rgba(255,69,21,.10),transparent 28%),
+    linear-gradient(145deg,#151515,#0c0c0c 68%,#160b08);
+  border:1px solid #3c2721;border-radius:16px;padding:15px;
+}
+.weapons-group h3{margin:0 0 11px;color:#ffe9df;font-size:17px}
+.weapons-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.weapon-card{
+  position:relative;display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;width:100%;
+  border:1px solid #342724;border-radius:12px;padding:13px;
+  background:linear-gradient(145deg,#171717,#0d0d0d);
+  color:#f2eee9;cursor:pointer;text-align:left;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.weapon-card:hover{transform:translateY(-2px);border-color:#a34a2e;box-shadow:0 10px 24px rgba(0,0,0,.25),0 0 20px rgba(255,72,25,.06)}
+.weapon-card:focus{outline:none}
+.weapon-card:focus-visible{outline:2px solid rgba(255,112,64,.65);outline-offset:2px}
+.weapon-icon{font-size:22px;flex:none;line-height:1}
+.weapon-info{display:flex;flex-direction:column;min-width:0;gap:5px}
+.weapon-card strong{display:block;font-size:14px;line-height:1.25;overflow-wrap:anywhere}
+.weapon-from{display:block;margin:0;color:#ff9b70;font-size:12px;font-weight:900}
+.weapon-modal{
+  display:flex;position:fixed;inset:0;z-index:10060;align-items:center;justify-content:center;
+  padding:12px;background:rgba(0,0,0,.76);backdrop-filter:blur(5px);
+  visibility:hidden;opacity:0;pointer-events:none;transition:opacity .2s ease,visibility .2s ease;
+}
+.weapon-modal.show{visibility:visible;opacity:1;pointer-events:auto}
+.weapon-modal-box{
+  position:relative;width:min(620px,100%);max-height:92vh;overflow:auto;
+  background:linear-gradient(145deg,#171717,#090909);
+  border:1px solid #7a3522;border-radius:18px;padding:20px;
+  box-shadow:0 25px 80px rgba(0,0,0,.72),0 0 35px rgba(255,68,22,.08);
+  transform:translateY(20px) scale(.97);opacity:0;transition:.25s cubic-bezier(.2,.8,.2,1);
+}
+.weapon-modal.show .weapon-modal-box{transform:none;opacity:1}
+.weapon-modal-close{
+  position:absolute;right:12px;top:10px;width:38px;height:38px;border-radius:10px;
+  border:1px solid #4b2b22;background:#141414;color:#fff;font-size:25px;cursor:pointer
+}
+.weapon-modal-kicker{color:#ff7040;font-size:10px;font-weight:900;letter-spacing:2px}
+.weapon-modal h2{margin:6px 42px 4px 0;font-size:23px}
+.weapon-modal-desc{margin:0 0 15px;color:#aaa39d;font-size:13px;line-height:1.45}
+.weapon-tier-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.weapon-tier{
+  display:flex;align-items:center;gap:8px;padding:11px 10px;
+  border:1px solid #392b27;border-radius:11px;background:#121212;color:#eee;
+  cursor:pointer;text-align:left;transition:.16s ease;
+}
+.weapon-tier:has(input:checked){border-color:#ff7040;background:rgba(255,75,25,.10);box-shadow:0 0 0 1px rgba(255,112,64,.12) inset}
+.weapon-tier input{accent-color:#ff7040;flex:none}
+.weapon-tier span{font-size:12px;font-weight:900;line-height:1.2}
+.weapon-tier small{display:block;color:#9d968f;font-size:10px;margin-top:3px}
+.weapon-addon{
+  display:flex;align-items:center;gap:10px;margin-top:14px;padding:12px;
+  border:1px solid #392b27;border-radius:11px;background:#121212;color:#eee;cursor:pointer
+}
+.weapon-addon input{width:17px;height:17px;accent-color:#ff7040;flex:none}
+.weapon-addon strong{font-size:13px}.weapon-addon small{display:block;color:#9d968f;margin-top:2px;font-size:10px}
+.weapon-total{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:15px;
+  padding:13px;border:1px solid #3c2923;border-radius:12px;background:#111;
+  font-weight:900;
+}
+.weapon-total strong{color:#ff8a5e;font-size:20px}
+.weapon-confirm{
+  width:100%;margin-top:12px;border:0;border-radius:11px;padding:13px;
+  background:linear-gradient(135deg,#ff7a45,#df3c18);color:#fff;font-weight:900;cursor:pointer;
+  box-shadow:0 8px 22px rgba(223,60,24,.18);
+}
+.weapon-confirm:active{transform:scale(.985)}
+.weapon-error{display:none;color:#ffaaa0;font-size:12px;margin-top:8px}
+.weapon-error.show{display:block}
+@media(max-width:600px){
+  .weapons-grid{grid-template-columns:1fr}
+  .weapon-tier-grid{grid-template-columns:1fr}
+  .weapon-modal-box{padding:16px;max-height:92vh}
+}
+</style>
+<style id="polkar-vehicles-tek-css">
+/* ===== POLKAR VEHICLES & TEK CATEGORY ===== */
+.vehicles-tek-category-card{
+  background:
+    radial-gradient(circle at 88% 16%,rgba(0,210,255,.22),transparent 34%),
+    linear-gradient(135deg,#11181a 0%,#070b0d 55%,#071b24 100%) !important;
+  border-color:#07566b !important;
+}
+.vehicles-tek-category-card .icon{
+  background:linear-gradient(145deg,rgba(0,214,255,.18),rgba(5,19,25,.82)) !important;
+  border-color:rgba(0,224,255,.46) !important;
+  box-shadow:0 0 18px rgba(0,205,255,.16) inset,0 0 12px rgba(0,205,255,.08);
+}
+.vehicles-tek-category-card strong{color:#e8fbff!important}
+.vehicles-tek-category-card::after{
+  content:"";position:absolute;inset:-70%;
+  background:linear-gradient(105deg,transparent 39%,rgba(0,225,255,.16) 50%,transparent 61%);
+  transform:translateX(-55%) rotate(8deg);
+  animation:vehiclesTekCardShine 3.4s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes vehiclesTekCardShine{
+  0%,56%{transform:translateX(-68%) rotate(8deg);opacity:0}
+  70%{opacity:1}
+  88%,100%{transform:translateX(68%) rotate(8deg);opacity:0}
+}
+body.theme-vehicles-tek{--line:#0aaed0}
+body.theme-vehicles-tek .section{border-color:#084b5c}
+.vehicles-tek-section .section-head{border-bottom-color:#073f50}
+.vehicles-tek-section .tag{color:#38dcff}
+.vehicles-catalog{display:grid;gap:14px;margin-top:15px}
+.vehicles-group{
+  background:
+    radial-gradient(circle at 90% 0%,rgba(0,207,255,.10),transparent 30%),
+    linear-gradient(145deg,#11191c,#090c0e 68%,#07151b);
+  border:1px solid #164654;border-radius:16px;padding:15px;
+}
+.vehicles-group h3{margin:0 0 11px;color:#e5fbff;font-size:17px}
+.vehicles-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.vehicle-card{
+  position:relative;display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0;width:100%;
+  border:1px solid #173b46;border-radius:12px;padding:13px;
+  background:linear-gradient(145deg,#121a1d,#090c0e);
+  color:#eefcff;cursor:pointer;text-align:left;
+  transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;
+  -webkit-tap-highlight-color:transparent;
+}
+.vehicle-card:hover{transform:translateY(-2px);border-color:#0ac7ec;box-shadow:0 10px 24px rgba(0,0,0,.25),0 0 22px rgba(0,207,255,.10)}
+.vehicle-card:focus{outline:none}
+.vehicle-card:focus-visible{outline:2px solid rgba(0,218,255,.65);outline-offset:2px}
+.vehicle-icon{font-size:22px;flex:none;line-height:1}
+.vehicle-info{display:flex;flex-direction:column;min-width:0;gap:5px}
+.vehicle-card strong{display:block;font-size:14px;line-height:1.25;overflow-wrap:anywhere}
+.vehicle-from{display:block;margin:0;color:#45dfff;font-size:12px;font-weight:900}
+.vehicle-modal{
+  display:flex;position:fixed;inset:0;z-index:10070;align-items:center;justify-content:center;
+  padding:12px;background:rgba(0,5,8,.78);backdrop-filter:blur(6px);
+  visibility:hidden;opacity:0;pointer-events:none;transition:opacity .2s ease,visibility .2s ease;
+}
+.vehicle-modal.show{visibility:visible;opacity:1;pointer-events:auto}
+.vehicle-modal-box{
+  position:relative;width:min(620px,100%);max-height:92vh;overflow:auto;
+  background:linear-gradient(145deg,#121c20,#070a0c);
+  border:1px solid #0b8aaa;border-radius:18px;padding:20px;
+  box-shadow:0 25px 80px rgba(0,0,0,.74),0 0 40px rgba(0,210,255,.10);
+  transform:translateY(20px) scale(.97);opacity:0;transition:.25s cubic-bezier(.2,.8,.2,1);
+}
+.vehicle-modal.show .vehicle-modal-box{transform:none;opacity:1}
+.vehicle-modal-close{
+  position:absolute;right:12px;top:10px;width:38px;height:38px;border-radius:10px;
+  border:1px solid #14566a;background:#0c1518;color:#fff;font-size:25px;cursor:pointer
+}
+.vehicle-modal-kicker{color:#39dcff;font-size:10px;font-weight:900;letter-spacing:2px}
+.vehicle-modal h2{margin:6px 42px 4px 0;font-size:23px}
+.vehicle-modal-desc{margin:0 0 15px;color:#9db6bd;font-size:13px;line-height:1.45}
+.vehicle-tier-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.vehicle-tier{
+  display:flex;align-items:center;gap:8px;padding:11px 10px;
+  border:1px solid #173f4c;border-radius:11px;background:#0c1417;color:#edfaff;
+  cursor:pointer;text-align:left;transition:.16s ease;
+}
+.vehicle-tier:has(input:checked){border-color:#00ccec;background:rgba(0,204,236,.10);box-shadow:0 0 0 1px rgba(0,218,255,.12) inset,0 0 18px rgba(0,210,255,.06)}
+.vehicle-tier input{accent-color:#00d7ff;flex:none}
+.vehicle-tier span{font-size:12px;font-weight:900;line-height:1.2}
+.vehicle-tier small{display:block;color:#8da9b1;font-size:10px;margin-top:3px}
+.vehicle-total{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:15px;
+  padding:13px;border:1px solid #164654;border-radius:12px;background:#0a1114;font-weight:900;
+}
+.vehicle-total strong{color:#45dfff;font-size:20px}
+.vehicle-confirm{
+  width:100%;margin-top:12px;border:0;border-radius:11px;padding:13px;
+  background:linear-gradient(135deg,#0bd9ff,#087da4);color:#fff;font-weight:900;cursor:pointer;
+  box-shadow:0 8px 22px rgba(0,151,190,.20);
+}
+.vehicle-confirm:active{transform:scale(.985)}
+.vehicle-error{display:none;color:#9ceeff;font-size:12px;margin-top:8px}
+.vehicle-error.show{display:block}
+@media(max-width:600px){
+  .vehicles-grid{grid-template-columns:1fr}
+  .vehicle-tier-grid{grid-template-columns:1fr}
+  .vehicle-modal-box{padding:16px;max-height:92vh}
+}
+</style>
 </head>
 <body id="top">
 <div class="container">
@@ -3600,12 +3852,12 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
 <!-- ===== KATEGORI PRODUK — TERPISAH POPULER & SEMUA ===== -->
 <section aria-labelledby="popular-title" class="category-section category-popular">
 <div class="category-section-head"><span class="category-kicker">PILIHAN UTAMA</span>
-<h2 id="popular-title">🔥 POPULER SEKARANG!</h2><p>4 kategori favorit yang paling sering dicari.</p></div>
+<h2 id="popular-title">🔥 POPULER SEKARANG!</h2><p>Kategori favorit yang paling sering dicari.</p></div>
 <nav aria-label="Kategori populer" class="category-grid">
 <a aria-label="DINO SATUAN — buka kategori" class="menu-btn category-card-compact" data-category="dino" href="#dino"><span class="icon">🦖</span><span class="category-card-copy"><strong>DINO SATUAN</strong></span></a>
 <a aria-label="PAKETAN DINO — buka kategori" class="menu-btn category-card-compact" data-category="paket-dino" href="#paket-dino"><span class="icon">📦</span><span class="category-card-copy"><strong>PAKETAN DINO</strong></span></a>
 <a aria-label="CRYOPOD — buka kategori" class="menu-btn category-card-compact" data-category="cryopod" href="#cryopod"><span class="icon">❄️</span><span class="category-card-copy"><strong>CRYOPOD</strong></span></a>
-<a aria-label="ALL ARMOR — buka kategori" class="menu-btn category-card-compact" data-category="armor" href="#armor"><span class="icon">🛡️</span><span class="category-card-copy"><strong>ALL ARMOR</strong></span></a>
+<a aria-label="ALL ARMOR — buka kategori" class="menu-btn category-card-compact" data-category="armor" href="#armor"><span class="icon">🛡️</span><span class="category-card-copy"><strong>ALL ARMOR</strong></span></a><a aria-label="WEAPONS — buka kategori" class="menu-btn category-card-compact weapons-category-card" data-category="weapons" href="#weapons"><span class="icon">⚔️</span><span class="category-card-copy"><strong>WEAPONS</strong></span></a><a aria-label="VEHICLES &amp; TEK — buka kategori" class="menu-btn category-card-compact vehicles-tek-category-card" data-category="vehicles-tek" href="#vehicles-tek"><span class="icon">🚀</span><span class="category-card-copy"><strong>VEHICLES &amp; TEK</strong></span></a>
 </nav>
 </section>
 <section aria-labelledby="all-category-title" class="category-section category-all">
@@ -3622,7 +3874,7 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
 <a aria-label="PAKET TAMING — buka kategori" class="menu-btn category-card-compact" data-category="taming" href="#taming"><span class="icon">🥩</span><span class="category-card-copy"><strong>PAKET TAMING</strong></span></a>
 <a aria-label="PAKET HATCHING — buka kategori" class="menu-btn category-card-compact" data-category="hatching" href="#hatching"><span class="icon">🥚</span><span class="category-card-copy"><strong>PAKET HATCHING</strong></span></a>
 <a aria-label="CAVE RUNNER — buka kategori" class="menu-btn category-card-compact" data-category="cave" href="#cave"><span class="icon">⛏️</span><span class="category-card-copy"><strong>CAVE RUNNER</strong></span></a>
-<a aria-label="UNDERWATER PACK — buka kategori" class="menu-btn category-card-compact" data-category="underwater" href="#underwater"><span class="icon">🌊</span><span class="category-card-copy"><strong>UNDERWATER PACK</strong></span></a>
+<a aria-label="UNDERWATER PACK — buka kategori" class="menu-btn category-card-compact" data-category="underwater" href="#underwater"><span class="icon">🌊</span><span class="category-card-copy"><strong>UNDERWATER PACK</strong></span></a><a aria-label="WEAPONS — buka kategori" class="menu-btn category-card-compact weapons-category-card" data-category="weapons" href="#weapons"><span class="icon">⚔️</span><span class="category-card-copy"><strong>WEAPONS</strong></span></a><a aria-label="VEHICLES &amp; TEK — buka kategori" class="menu-btn category-card-compact vehicles-tek-category-card" data-category="vehicles-tek" href="#vehicles-tek"><span class="icon">🚀</span><span class="category-card-copy"><strong>VEHICLES &amp; TEK</strong></span></a>
 </nav>
 </section>
 <style id="category-separated-layout">
@@ -3791,7 +4043,7 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
 
 
 
-<a class="polkar-footer-link" data-category="dino" href="#dino">🦖 Dino Satuan</a><a class="polkar-footer-link" data-category="paket-dino" href="#paket-dino">📦 Paketan Dino</a><a class="polkar-footer-link" data-category="armor" href="#armor">🛡️ All Armor</a><a class="polkar-footer-link" data-category="engram" href="#engram">🔓 Engram Unlock</a><a class="polkar-footer-link" data-category="cryopod" href="#cryopod">❄️ Cryopod</a><a class="polkar-footer-link" data-category="base" href="#base">🏠 Jasa Bikin Base</a><a class="polkar-footer-link" data-category="taming" href="#taming">🥩 Paket Taming</a><a class="polkar-footer-link" data-category="hatching" href="#hatching">🥚 Paket Hatching</a><a class="polkar-footer-link" data-category="cave" href="#cave">⛏️ Cave Runner</a><a class="polkar-footer-link" data-category="underwater" href="#underwater">🌊 Underwater Pack</a><a class="polkar-footer-link" data-category="skin" href="#skin">🎨 Skin ARK</a></div>
+<a class="polkar-footer-link" data-category="dino" href="#dino">🦖 Dino Satuan</a><a class="polkar-footer-link" data-category="paket-dino" href="#paket-dino">📦 Paketan Dino</a><a class="polkar-footer-link" data-category="armor" href="#armor">🛡️ All Armor</a><a class="polkar-footer-link" data-category="engram" href="#engram">🔓 Engram Unlock</a><a class="polkar-footer-link" data-category="cryopod" href="#cryopod">❄️ Cryopod</a><a class="polkar-footer-link" data-category="base" href="#base">🏠 Jasa Bikin Base</a><a class="polkar-footer-link" data-category="taming" href="#taming">🥩 Paket Taming</a><a class="polkar-footer-link" data-category="hatching" href="#hatching">🥚 Paket Hatching</a><a class="polkar-footer-link" data-category="cave" href="#cave">⛏️ Cave Runner</a><a class="polkar-footer-link" data-category="underwater" href="#underwater">🌊 Underwater Pack</a><a class="polkar-footer-link" data-category="weapons" href="#weapons">🔥 Weapons</a><a class="polkar-footer-link" data-category="skin" href="#skin">🎨 Skin ARK</a></div>
 <div class="polkar-footer-col">
 <h3>Dukungan</h3>
 <a href="https://wa.me/6287873026096" rel="noopener noreferrer" target="_blank">WhatsApp</a>
@@ -4001,6 +4253,22 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
 </div>
 <ul class="list" style="margin-top:12px"><li>1x Set Scuba Gear</li><li>1x Harpoon Launcher (Ascendant) + 50x Tranq Spear Bol</li><li>20x Cryopod</li></ul>
 </div>
+</section>
+<section class="section weapons-section" id="detail-weapons">
+<a class="back-btn" data-back="" href="#menu">← KEMBALI KE MENU</a>
+<div class="section-head">
+  <div><h2>🔥 WEAPONS</h2><p>Senjata & tools dengan pilihan tier kualitas. Klik produk untuk atur tier dan add-on.</p></div>
+  <div class="tag">WEAPONS</div>
+</div>
+<div class="weapons-catalog" id="weapons-catalog"></div>
+</section>
+<section class="section vehicles-tek-section" id="detail-vehicles-tek">
+<a class="back-btn" data-back="" href="#menu">← KEMBALI KE MENU</a>
+<div class="section-head">
+  <div><h2>🚀 VEHICLES &amp; TEK</h2><p>Kendaraan, platform, dan kebutuhan TEK dengan pilihan varian. Klik produk untuk pilih paket.</p></div>
+  <div class="tag">VEHICLES &amp; TEK</div>
+</div>
+<div class="vehicles-catalog" id="vehicles-catalog"></div>
 </section>
 <section class="section cs-page" id="detail-cs">
 <div class="cs-shell">
@@ -4217,6 +4485,34 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
 </div>
 </div>
 </div>
+</div>
+<div aria-hidden="true" class="weapon-modal" id="weapon-modal" role="dialog">
+  <div class="weapon-modal-box">
+    <button aria-label="Tutup" class="weapon-modal-close" id="weapon-modal-close" type="button">×</button>
+    <div class="weapon-modal-kicker">POLKAR WEAPONS</div>
+    <h2 id="weapon-modal-name">Weapon</h2>
+    <p class="weapon-modal-desc" id="weapon-modal-desc">Pilih tier yang kamu inginkan.</p>
+    <div class="weapon-tier-grid" id="weapon-tier-options"></div>
+    <label class="weapon-addon" id="weapon-ammo-option">
+      <input id="weapon-ammo" type="checkbox"/>
+      <span><strong>+200 Ammo</strong><small>Tambah Rp 1.000 ke total pesanan</small></span>
+    </label>
+    <div class="weapon-total"><span>Total</span><strong id="weapon-total-price">—</strong></div>
+    <div class="weapon-error" id="weapon-error">Pilih tier terlebih dahulu.</div>
+    <button class="weapon-confirm" id="weapon-confirm" type="button">🛒 TAMBAH KE KERANJANG</button>
+  </div>
+</div>
+<div aria-hidden="true" class="vehicle-modal" id="vehicle-modal" role="dialog">
+  <div class="vehicle-modal-box">
+    <button aria-label="Tutup" class="vehicle-modal-close" id="vehicle-modal-close" type="button">×</button>
+    <div class="vehicle-modal-kicker">POLKAR VEHICLES &amp; TEK</div>
+    <h2 id="vehicle-modal-name">Vehicle</h2>
+    <p class="vehicle-modal-desc" id="vehicle-modal-desc">Pilih varian yang kamu inginkan.</p>
+    <div class="vehicle-tier-grid" id="vehicle-tier-options"></div>
+    <div class="vehicle-total"><span>Total</span><strong id="vehicle-total-price">—</strong></div>
+    <div class="vehicle-error" id="vehicle-error">Pilih varian terlebih dahulu.</div>
+    <button class="vehicle-confirm" id="vehicle-confirm" type="button">🛒 TAMBAH KE KERANJANG</button>
+  </div>
 </div>
 <script>
 (function(){
@@ -4665,7 +4961,7 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
     starter:["Raptor","Pteranodon","Triceratops (Trike)","Mantis","Carnotaurus","Allosaurus"],
     harvest:["Ankylosaurus (Anky)","Doedicurus (Doedi)","Castoroides","Therizino","Argentavis (Argi)","Mammoth","Thorny Dragon","Brontosaurus","Diplodocus","Stegosaurus","Triceratops (Trike)","Megatherium","Procoptodon","Equus / Unicorn","Moschops","Iguanodon","Parasaur / Tek Parasaur","Phiomia","Chalico (Chalicotherium)","Paraceratherium","Carbonemys","Pachy","Pegomastax / Ichthyornis","Lystrosaurus","Megaloceros","Morellatops","Roll Rat","Gasbags","Diplocaulus","Dimetrodon","Oviraptor","Achatina","Gallimimus","Mesopithecus","Kentrosaurus","Pachyrhinosaurus","Dodo"],
     apex:["Giganotosaurus (Giga)","Carcharodontosaurus (Carcha)","Griffin","Mosasaurus (Mossa)","Tusoteuthis (Tuso)","Plesiosaur","Dunkleosteus","Titanosaur"],
-    exclusive:["Magmasaur","Rock Drake","Managarmr","Shadowmane","Wyvern Fire","Wyvern Lightning","Wyvern Poison","Wyvern Ice","Reaper King","Karkinos","Snow Owl","Velonasaur","Basilisk","Phoenix","Bloodstalker","Ferox","Astrocetus","Astrodelphis","Maewing","Tek Stryder"],
+    exclusive:["Magmasaur","Rock Drake","Managarmr","Shadowmane","Wyvern Fire","Wyvern Lightning","Wyvern Poison","Wyvern Ice","Reaper King","Karkinos","Snow Owl","Velonasaur","Basilisk","Phoenix","Bloodstalker","Ferox","Astrocetus","Astrodelphis","Maewing","TEK Stryder","Tropeognathus"],
     pet:["Dimorphodon","Otter","Archaeopteryx","Jerboa","Oviraptor","Lystrosaurus","Dung Beetle","Achatina","Troodon","Microraptor","Pegomastax","Compy","Ichthyornis","Dimetrodon"],
     ultimate:["Wyvern Fire","Wyvern Lightning","Wyvern Poison","Wyvern Ice"],
     dominus:["Quetzal","Tapejara","Pteranodon"]
@@ -4722,7 +5018,7 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
     }
   });
 
-  const themedCategories=['cryopod','armor','base','engram','taming','hatching','cave','underwater','skin','skin-packages'];
+  const themedCategories=['cryopod','armor','base','engram','taming','hatching','cave','underwater','skin','skin-packages','weapons','vehicles-tek'];
   function applyPageTheme(id){
     document.body.classList.remove(...themedCategories.map(x=>'theme-'+x));
     if(themedCategories.includes(id)) document.body.classList.add('theme-'+id);
@@ -4892,7 +5188,7 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
     'Sabertooth':'Karnivora', 'Mantis':'Karnivora', 'Rhyniognatha':'Karnivora',
     'Dire Bear':'Omnivora', 'Mesopithecus':'Omnivora', 'Argentavis':'Karnivora',
     'Carnotaurus':'Karnivora', 'Allosaurus':'Karnivora', 'Raptor':'Karnivora',
-    'Giganotosaurus':'Karnivora', 'Carcharodontosaurus':'Karnivora', 'Griffin':'Karnivora',
+    'Giganotosaurus':'Karnivora', 'Carcharodontosaurus':'Karnivora', 'Griffin':'Karnivora', 'Tropeognathus':'Karnivora',
     'Mosasaurus':'Karnivora', 'Tusoteuthis':'Karnivora', 'Plesiosaur':'Karnivora',
     'Dunkleosteus':'Karnivora', 'Titanosaur':'Herbivora', 'Basilisk':'Karnivora',
     'Managarmr':'Karnivora', 'Shadowmane':'Karnivora', 'Wyvern Fire':'Karnivora',
@@ -4951,6 +5247,7 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
   addDinos(['Terror Bird'],'Harvester / 3K');
   addDinos(['Dire Bear'],'Predator / Starter');
   addDinos(['Megachelon'],'Exclusive');
+  addDinos(['TEK Stryder','Tropeognathus'],'Exclusive');
   addDinos(['Tapejara'],'Harvester / 3K');
   addDinos(['Baryonyx','Megalosaurus','Liopleurodon','Thylacoleo','Megatherium','Ravager','Sarcosuchus','Kaprosuchus','Quetzal'],'Predator / Starter');
   addDinos(['Dimorphodon','Otter','Archaeopteryx','Jerboa','Oviraptor','Lystrosaurus','Dung Beetle','Achatina','Troodon','Microraptor','Pegomastax','Compy','Ichthyornis','Dimetrodon'],'Pet Creature');
@@ -5377,6 +5674,10 @@ body.theme-skin-packages .generic-box .generic-order{background:linear-gradient(
     [modal, levelModal, cartModal, genericModal, orderModal].forEach(m=>{
       if(m){m.classList.remove('show');m.setAttribute('aria-hidden','true');}
     });
+    document.querySelectorAll('.weapon-modal.show,.vehicle-modal.show').forEach(m=>{
+      m.classList.remove('show');
+      m.setAttribute('aria-hidden','true');
+    });
     document.body.style.overflow='';
   }
   // Paksa semua popup tertutup saat halaman pertama kali dimuat / dipulihkan browser.
@@ -5719,6 +6020,235 @@ function openGeneric(el){
 
   document.querySelectorAll('.view-detail .section').forEach(s=>s.style.display='none');
   const initial=location.hash.slice(1); if(initial&&document.getElementById('detail-'+initial)){document.getElementById('detail-'+initial).style.display='block';document.body.classList.add('detail-mode');applyPageTheme(initial);}
+
+  // ===== WEAPONS CATALOG + REAL-TIME TIER/AMMO MODAL =====
+  const weaponsData = [
+    {
+      category:'RANGED WEAPONS', icon:'🎯',
+      products:[
+        {name:'Pump-Action Shotgun',tiers:[['Mastercraft',4500],['Ascendant Mid',6000],['Max Ascendant',8000]],ammo:true},
+        {name:'Fabricated Sniper Rifle',tiers:[['Mastercraft',4500],['Ascendant Mid',6000],['Max Ascendant',8000]],ammo:true},
+        {name:'Compound Bow',tiers:[['Mastercraft',3500],['Ascendant Mid',5500],['Max Ascendant',7500]],ammo:true},
+        {name:'Longneck Rifle',tiers:[['Mastercraft',3000],['Ascendant Mid',5000],['Max Ascendant',7000]],ammo:true},
+        {name:'Crossbow',tiers:[['Mastercraft',2000],['Ascendant Mid',4000],['Max Ascendant',6000]],ammo:true},
+        {name:'Assault Rifle',tiers:[['Mastercraft',3000],['Ascendant Mid',5000],['Max Ascendant',7000]],ammo:true},
+        {name:'Fabricated Pistol',tiers:[['Mastercraft',2500],['Ascendant Mid',4000],['Max Ascendant',6000]],ammo:true},
+        {name:'Rocket Launcher',tiers:[['Mastercraft',4000],['Ascendant Mid',6000],['Max Ascendant',8500]],ammo:true}
+      ]
+    },
+    {
+      category:'MELEE & TOOLS', icon:'⚒️',
+      products:[
+        {name:'Sword',tiers:[['Mastercraft',3000],['Ascendant Mid',5000],['Max Ascendant',7500]],ammo:false},
+        {name:'Chainsaw',tiers:[['Mastercraft',3500],['Ascendant Mid',5500],['Max Ascendant',7500]],ammo:false},
+        {name:'Pike',tiers:[['Mastercraft',1500],['Ascendant Mid',3000],['Max Ascendant',5000]],ammo:false},
+        {name:'Wooden Club',tiers:[['Mastercraft',1000],['Ascendant Mid',2000],['Max Ascendant',4000]],ammo:false},
+        {name:'Metal Hatchet / Pick',tiers:[['Mastercraft',1500],['Ascendant Mid',2500],['Max Ascendant',4500]],ammo:false}
+      ]
+    },
+    {
+      category:'TEK WEAPONS (END-GAME)', icon:'⚡',
+      products:[
+        {name:'TEK Rifle',tiers:[['Standard',7000],['Max Stat',9000]],ammo:true},
+        {name:'TEK Sword',tiers:[['Standard',7500],['Max Stat',9500]],ammo:false},
+        {name:'TEK Bow',tiers:[['Standard',8000],['Max Stat',10000]],ammo:true},
+        {name:'TEK Grenade Launcher',tiers:[['Standard',8000],['Max Stat',10000]],ammo:true},
+        {name:'TEK Railgun',tiers:[['Standard',8500],['Max Stat',11000]],ammo:true}
+      ]
+    }
+  ];
+  const weaponsCatalog=document.getElementById('weapons-catalog');
+  const weaponModal=document.getElementById('weapon-modal');
+  const weaponModalName=document.getElementById('weapon-modal-name');
+  const weaponModalDesc=document.getElementById('weapon-modal-desc');
+  const weaponTierOptions=document.getElementById('weapon-tier-options');
+  const weaponAmmoOption=document.getElementById('weapon-ammo-option');
+  const weaponAmmo=document.getElementById('weapon-ammo');
+  const weaponTotalPrice=document.getElementById('weapon-total-price');
+  const weaponError=document.getElementById('weapon-error');
+  let activeWeapon=null;
+  let activeWeaponTier=0;
+
+  function renderWeapons(){
+    if(!weaponsCatalog)return;
+    weaponsCatalog.innerHTML=weaponsData.map(group=>`
+      <div class="weapons-group">
+        <h3>${group.icon} ${group.category}</h3>
+        <div class="weapons-grid">
+          ${group.products.map((p,idx)=>`
+            <button type="button" class="weapon-card" data-weapon-group="${weaponsData.indexOf(group)}" data-weapon-index="${idx}" aria-label="${p.name}">
+              <span class="weapon-icon">${group.icon}</span>
+              <span class="weapon-info">
+                <strong>${p.name}</strong>
+                <span class="weapon-from">Mulai ${rupiah(Math.min(...p.tiers.map(t=>t[1])))}</span>
+              </span>
+            </button>`).join('')}
+        </div>
+      </div>`).join('');
+  }
+  function weaponPrice(){
+    if(!activeWeapon)return 0;
+    const base=Number(activeWeapon.tiers[activeWeaponTier]?.[1]||0);
+    return base+(weaponAmmo.checked?1000:0);
+  }
+  function updateWeaponTotal(){
+    weaponTotalPrice.textContent=rupiah(weaponPrice());
+  }
+  function openWeapon(product){
+    activeWeapon=product; activeWeaponTier=0;
+    weaponModalName.textContent=product.name;
+    weaponModalDesc.textContent=product.tiers.length===2
+      ? 'Pilih tier yang kamu inginkan.'
+      : 'Pilih tier yang kamu inginkan.';
+    weaponTierOptions.innerHTML=product.tiers.map((tier,i)=>`
+      <label class="weapon-tier">
+        <input type="radio" name="weapon-tier" value="${i}" ${i===0?'checked':''}>
+        <span>${tier[0]}<small>${rupiah(tier[1])}</small></span>
+      </label>`).join('');
+    weaponAmmo.checked=false;
+    weaponAmmoOption.style.display=product.ammo===true?'flex':'none';
+    weaponError.classList.remove('show');
+    updateWeaponTotal();
+    weaponModal.classList.add('show');
+    weaponModal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeWeapon(){
+    weaponModal.classList.remove('show');
+    weaponModal.setAttribute('aria-hidden','true');
+    if(!document.querySelector('.generic-modal.show,.dino-level-modal.show,.cart-modal.show,.order-modal.show,.package-modal.show')) document.body.style.overflow='';
+  }
+  renderWeapons();
+  weaponsCatalog?.addEventListener('click',e=>{
+    const card=e.target.closest('.weapon-card'); if(!card)return;
+    const product=weaponsData[Number(card.dataset.weaponGroup)]?.products[Number(card.dataset.weaponIndex)];
+    if(product)openWeapon(product);
+  });
+  weaponTierOptions?.addEventListener('change',e=>{
+    if(e.target.name!=='weapon-tier')return;
+    activeWeaponTier=Number(e.target.value);
+    weaponError.classList.remove('show');
+    updateWeaponTotal();
+  });
+  weaponAmmo?.addEventListener('change',updateWeaponTotal);
+  document.getElementById('weapon-modal-close')?.addEventListener('click',closeWeapon);
+  weaponModal?.addEventListener('click',e=>{if(e.target===weaponModal)closeWeapon();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&weaponModal?.classList.contains('show'))closeWeapon();});
+  document.getElementById('weapon-confirm')?.addEventListener('click',()=>{
+    if(!activeWeapon)return;
+    const tier=activeWeapon.tiers[activeWeaponTier];
+    if(!tier){weaponError.classList.add('show');return;}
+    const ammo=activeWeapon.ammo===true?weaponAmmo.checked:false;
+    const total=Number(tier[1])+(ammo?1000:0);
+    cart.push({
+      name:activeWeapon.name,
+      detail:`${tier[0]}${ammo?' • +200 Ammo':''}`,
+      price:total,
+      custom:false
+    });
+    renderCart();
+    closeWeapon();
+  });
+  // ===== VEHICLES & TEK CATALOG + REAL-TIME VARIANT MODAL =====
+  const vehiclesData = [
+    {
+      category:'VEHICLES',
+      icon:'🚀',
+      products:[
+        {name:'Hovering Skiff',tiers:[['Standar (Unassembled / Ready to Deploy)',10000],['Full Pack Bundle (+ 100-200 Element Fuel)',15000]]},
+        {name:'Raft (Rakit)',tiers:[['Standard / Polosan',2000],['Custom Trapping Raft (Jebakan Dino)',3500],['Armored Raft Base (Lapis Besi & Bed)',5000]]},
+        {name:'Armored Motorboat',tiers:[['Structure Only',5000],['Turret Ready (Full War Boat)',8000]]},
+        {name:'Platform Saddles Pack',tiers:[['Quetzal Platform Saddle',3000],['Mosasaur Platform Saddle',3000],['Paraceratherium Platform Saddle',3000],['Brontosaurus Platform Saddle',3000],['Plesiosaur Platform Saddle',3000],['Titanosaur Platform Saddle',3000]]},
+        {name:'Element Skiff Fuel Pack',tiers:[['100x Element',5000],['250x Element',10000]]}
+      ]
+    }
+  ];
+  const vehiclesCatalog=document.getElementById('vehicles-catalog');
+  const vehicleModal=document.getElementById('vehicle-modal');
+  const vehicleModalName=document.getElementById('vehicle-modal-name');
+  const vehicleModalDesc=document.getElementById('vehicle-modal-desc');
+  const vehicleTierOptions=document.getElementById('vehicle-tier-options');
+  const vehicleTotalPrice=document.getElementById('vehicle-total-price');
+  const vehicleError=document.getElementById('vehicle-error');
+  let activeVehicle=null;
+  let activeVehicleTier=0;
+
+  function renderVehicles(){
+    if(!vehiclesCatalog)return;
+    vehiclesCatalog.innerHTML=vehiclesData.map(group=>`
+      <div class="vehicles-group">
+        <h3>${group.icon} ${group.category}</h3>
+        <div class="vehicles-grid">
+          ${group.products.map((p,idx)=>`
+            <button type="button" class="vehicle-card" data-vehicle-group="${vehiclesData.indexOf(group)}" data-vehicle-index="${idx}" aria-label="${p.name}">
+              <span class="vehicle-icon">${group.icon}</span>
+              <span class="vehicle-info">
+                <strong>${p.name}</strong>
+                <span class="vehicle-from">Mulai ${rupiah(Math.min(...p.tiers.map(t=>t[1])))}</span>
+              </span>
+            </button>`).join('')}
+        </div>
+      </div>`).join('');
+  }
+
+  function vehiclePrice(){
+    if(!activeVehicle)return 0;
+    return Number(activeVehicle.tiers[activeVehicleTier]?.[1]||0);
+  }
+  function updateVehicleTotal(){
+    vehicleTotalPrice.textContent=rupiah(vehiclePrice());
+  }
+  function openVehicle(product){
+    activeVehicle=product;
+    activeVehicleTier=0;
+    vehicleModalName.textContent=product.name;
+    vehicleModalDesc.textContent='Pilih varian yang kamu inginkan.';
+    vehicleTierOptions.innerHTML=product.tiers.map((tier,i)=>`
+      <label class="vehicle-tier">
+        <input type="radio" name="vehicle-tier" value="${i}" ${i===0?'checked':''}>
+        <span>${tier[0]}<small>${rupiah(tier[1])}</small></span>
+      </label>`).join('');
+    vehicleError.classList.remove('show');
+    updateVehicleTotal();
+    vehicleModal.classList.add('show');
+    vehicleModal.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeVehicle(){
+    vehicleModal.classList.remove('show');
+    vehicleModal.setAttribute('aria-hidden','true');
+    if(!document.querySelector('.generic-modal.show,.dino-level-modal.show,.cart-modal.show,.order-modal.show,.package-modal.show,.weapon-modal.show')) document.body.style.overflow='';
+  }
+
+  renderVehicles();
+  vehiclesCatalog?.addEventListener('click',e=>{
+    const card=e.target.closest('.vehicle-card');
+    if(!card)return;
+    const product=vehiclesData[Number(card.dataset.vehicleGroup)]?.products[Number(card.dataset.vehicleIndex)];
+    if(product)openVehicle(product);
+  });
+  vehicleTierOptions?.addEventListener('change',e=>{
+    if(e.target.name!=='vehicle-tier')return;
+    activeVehicleTier=Number(e.target.value);
+    vehicleError.classList.remove('show');
+    updateVehicleTotal();
+  });
+  document.getElementById('vehicle-modal-close')?.addEventListener('click',closeVehicle);
+  vehicleModal?.addEventListener('click',e=>{if(e.target===vehicleModal)closeVehicle();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&vehicleModal?.classList.contains('show'))closeVehicle();});
+  document.getElementById('vehicle-confirm')?.addEventListener('click',()=>{
+    if(!activeVehicle)return;
+    const tier=activeVehicle.tiers[activeVehicleTier];
+    if(!tier){vehicleError.classList.add('show');return;}
+    cart.push({
+      name:activeVehicle.name,
+      detail:tier[0],
+      price:Number(tier[1]),
+      custom:false
+    });
+    renderCart();
+    closeVehicle();
+  });
 })();
 </script>
 <script id="polkar-header-revision-js">
@@ -6966,5 +7496,91 @@ function openGeneric(el){
     reviewList.innerHTML='<div class="polkar-review-error">Ulasan realtime belum bisa dimuat. Pastikan Firestore aktif dan Rules mengizinkan read pada koleksi <b>reviews</b>.</div>';
   });
 </script>
+
+<script id="polkar-add-to-cart-micro-js">
+(function(){
+'use strict';
+const SEL='#add-to-cart,#cryo-custom-cart,.generic-add,[data-add-to-cart],.add-to-cart';
+const CART='#open-cart,#open-cart-main';
+function visible(e){if(!e)return false;const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&getComputedStyle(e).visibility!=='hidden'}
+function getCart(){const a=[...document.querySelectorAll(CART)];return a.find(visible)||a[0]}
+function prep(b){
+  if(!b||b.dataset.atcReady)return;
+  b.dataset.atcReady='1';
+  const original=b.innerHTML;
+  b.innerHTML='<span class="atc-original">'+original+'</span><span class="atc-spinner" aria-hidden="true"></span><span class="atc-success"><svg class="atc-checkmark" viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9.3 7.2 13 14.6 5.4"/></svg><span>Berhasil!</span></span>';
+  b.classList.add('atc-micro-target');
+}
+function fly(src){
+  const c=getCart(); if(!c)return;
+  const a=src.getBoundingClientRect(),z=c.getBoundingClientRect();
+  const sx=a.left+a.width/2,sy=a.top+a.height/2,ex=z.left+z.width/2,ey=z.top+z.height/2;
+  const d=document.createElement('i'); d.className='atc-fly-dot';
+  d.style.setProperty('--sx',sx+'px');d.style.setProperty('--sy',sy+'px');d.style.setProperty('--mx',((sx+ex)/2)+'px');d.style.setProperty('--my',((sy+ey)/2)+'px');d.style.setProperty('--ex',ex+'px');d.style.setProperty('--ey',ey+'px');
+  document.body.appendChild(d);
+  c.classList.remove('atc-cart-pop'); void c.offsetWidth; c.classList.add('atc-cart-pop');
+  setTimeout(()=>{d.remove();c.classList.remove('atc-cart-pop')},370);
+}
+function badge(){
+  ['#cart-count','#cart-count-main'].forEach(q=>{const e=document.querySelector(q);if(!e)return;e.classList.remove('atc-badge-pop');void e.offsetWidth;e.classList.add('atc-badge-pop');setTimeout(()=>e.classList.remove('atc-badge-pop'),330)});
+}
+function feedback(b){
+  prep(b);
+  b.classList.remove('atc-success-state');
+  b.classList.add('atc-loading');
+  b.setAttribute('aria-busy','true');
+  fly(b);
+  setTimeout(()=>{b.classList.remove('atc-loading');b.classList.add('atc-success-state');badge()},150);
+  setTimeout(()=>{b.classList.remove('atc-success-state');b.removeAttribute('aria-busy')},480);
+}
+function trigger(b){
+  if(!b||b.dataset.atcAnimating)return;
+  b.dataset.atcAnimating='1';
+  feedback(b);
+  setTimeout(()=>{b.dataset.atcAnimating='0'},520);
+}
+function init(){
+  document.querySelectorAll(SEL).forEach(prep);
+  document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest(SEL);if(b&&!b.disabled)trigger(b)},true);
+  document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest(SEL);if(b&&!b.disabled&&!b.dataset.atcAnimating)trigger(b)},true);
+  ['#cart-count','#cart-count-main'].forEach(q=>{const e=document.querySelector(q);if(!e)return;let last=e.textContent;new MutationObserver(()=>{if(e.textContent!==last){last=e.textContent;badge()}}).observe(e,{childList:true,characterData:true,subtree:true})});
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+</script>
+
+<script id="polkar-cart-success-popup-js">
+(function(){
+'use strict';
+function init(){
+  if(document.getElementById('polkar-cart-success-popup')) return;
+  const el=document.createElement('div');
+  el.id='polkar-cart-success-popup';
+  el.innerHTML='<div class="pcs-icon"><svg viewBox="0 0 20 20"><path d="M4 10.2 8 14l8-8"/></svg></div><div class="pcs-copy"><div class="pcs-title">Berhasil masuk keranjang!</div><div class="pcs-sub">Pesanan kamu sudah ditambahkan</div></div><div class="pcs-cart">🛒 Keranjang</div>';
+  document.body.appendChild(el);
+  let last=-1, timer=0, ready=false;
+  function read(){
+    const n=parseInt((document.getElementById('cart-count')||document.getElementById('cart-count-main'))?.textContent||'0',10);
+    return Number.isFinite(n)?n:0;
+  }
+  function show(){
+    clearTimeout(timer); el.classList.remove('show','pop'); void el.offsetWidth; el.classList.add('show','pop');
+    timer=setTimeout(()=>el.classList.remove('show'),1450);
+  }
+  function check(){
+    const n=read();
+    if(ready && n>last) show();
+    last=n; ready=true;
+  }
+  check();
+  ['cart-count','cart-count-main'].forEach(id=>{
+    const e=document.getElementById(id); if(!e)return;
+    new MutationObserver(check).observe(e,{childList:true,characterData:true,subtree:true});
+  });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
+
 </body>
 </html>
